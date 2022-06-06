@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function HeaderLoggedIn({ setLoggedIn }) {
   const handleLogout = () => {
@@ -23,9 +24,9 @@ function HeaderLoggedIn({ setLoggedIn }) {
           src={localStorage.getItem("mini_sns_avatar")}
         />
       </a>
-      <a className="btn btn-sm btn-success mr-2" href="/create-post">
+      <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
-      </a>
+      </Link>
       <button
         onClick={() => {
           handleLogout();

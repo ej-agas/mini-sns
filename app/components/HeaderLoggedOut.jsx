@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { apiBaseUrl } from "../constants";
 
 function HeaderLoggedOut({ setLoggedIn }) {
   const [username, setUsername] = useState("");
@@ -7,7 +8,7 @@ function HeaderLoggedOut({ setLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const api = "http://localhost:8080/login";
+    const api = `${apiBaseUrl}/login`;
 
     try {
       const response = await fetch(api, {

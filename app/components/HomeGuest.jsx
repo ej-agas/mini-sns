@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Page from "./Page";
+import { apiBaseUrl } from "../constants";
 
 function HomeGuest() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ function HomeGuest() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const api = "http://localhost:8080/register";
+    const api = `${apiBaseUrl}/register`;
 
     try {
       await fetch(api, {
