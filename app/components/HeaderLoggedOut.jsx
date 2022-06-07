@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { apiBaseUrl } from "../constants";
-import SnsContext from "../SnsContext";
+import DispatchContext from "../DispatchContext";
 
 function HeaderLoggedOut() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setLoggedIn } = useContext(SnsContext);
+  const appDispatch = useContext(DispatchContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ function HeaderLoggedOut() {
         localStorage.setItem("mini_sns_username", data.username);
         localStorage.setItem("mini_sns_avatar", data.avatar);
 
-        setLoggedIn(true);
+        appDispatch({ type: "login" });
         return;
       }
 

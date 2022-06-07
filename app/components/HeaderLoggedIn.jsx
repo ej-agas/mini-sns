@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import SnsContext from "../SnsContext";
+import DispatchContext from "../DispatchContext";
 
 function HeaderLoggedIn() {
-  const { setLoggedIn } = useContext(SnsContext);
+  const appDispatch = useContext(DispatchContext);
 
   const handleLogout = () => {
-    setLoggedIn(false);
+    appDispatch({ type: "logout" });
     localStorage.removeItem("mini_sns_token");
     localStorage.removeItem("mini_sns_username");
     localStorage.removeItem("mini_sns_avatar");

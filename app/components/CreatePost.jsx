@@ -2,13 +2,13 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 import { apiBaseUrl } from "../constants";
-import SnsContext from "../SnsContext";
+import DispatchContext from "../DispatchContext";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const navigate = useNavigate();
-  const { addFlashMessage } = useContext(SnsContext);
+  const appDispatch = useContext(DispatchContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ function CreatePost() {
       const data = await response.json();
 
       if (data) {
-        addFlashMessage("Post Created.");
+        appDispatch({ type: "flashMessage", value: "Post Created." });
         navigate(`/posts/${data}`);
         return;
       }
