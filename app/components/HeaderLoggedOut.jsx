@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { apiBaseUrl } from "../constants";
+import SnsContext from "../SnsContext";
 
-function HeaderLoggedOut({ setLoggedIn }) {
+function HeaderLoggedOut() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setLoggedIn } = useContext(SnsContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const api = `${apiBaseUrl}/login`;
 
     try {
@@ -17,6 +18,7 @@ function HeaderLoggedOut({ setLoggedIn }) {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
+
       if (data) {
         localStorage.setItem("mini_sns_token", data.token);
         localStorage.setItem("mini_sns_username", data.username);

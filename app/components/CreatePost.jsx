@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 import { apiBaseUrl } from "../constants";
+import SnsContext from "../SnsContext";
 
-function CreatePost({ addFlashMessage }) {
+function CreatePost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const navigate = useNavigate();
+  const { addFlashMessage } = useContext(SnsContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

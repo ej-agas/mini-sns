@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import SnsContext from "../SnsContext";
 
-function HeaderLoggedIn({ setLoggedIn }) {
+function HeaderLoggedIn() {
+  const { setLoggedIn } = useContext(SnsContext);
+
   const handleLogout = () => {
     setLoggedIn(false);
     localStorage.removeItem("mini_sns_token");
