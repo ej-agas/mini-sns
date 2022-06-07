@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 import { apiBaseUrl } from "../constants";
 
-function CreatePost() {
+function CreatePost({ addFlashMessage }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,10 +23,12 @@ function CreatePost() {
           token: localStorage.getItem("mini_sns_token"),
         }),
       });
+
       const data = await response.json();
+
       if (data) {
-        console.log(data);
-        console.log("Post Created.");
+        addFlashMessage("Post Created.");
+        navigate(`/posts/${data}`);
         return;
       }
 
