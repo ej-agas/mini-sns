@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
+import LoadingDotsIcon from "./LoadingDotsIcon";
 
 function ProfilePosts() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,7 @@ function ProfilePosts() {
     getPosts();
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingDotsIcon />;
 
   return (
     <div className="list-group">

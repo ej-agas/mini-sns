@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
+import LoadingDotsIcon from "./LoadingDotsIcon";
 import Page from "./Page";
 
 function ViewSingePost() {
@@ -32,7 +33,7 @@ function ViewSingePost() {
   if (isLoading)
     return (
       <Page title="...">
-        <div>Loading...</div>
+        <LoadingDotsIcon />
       </Page>
     );
 
