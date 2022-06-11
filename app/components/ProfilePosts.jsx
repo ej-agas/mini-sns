@@ -18,8 +18,8 @@ function ProfilePosts() {
         });
         const data = await response.json();
 
-        setIsLoading(false);
         setPosts(data);
+        setIsLoading(false);
       } catch (e) {
         console.log(e);
       }
