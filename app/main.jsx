@@ -1,6 +1,7 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useImmerReducer } from "use-immer";
 
 import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
@@ -14,27 +15,48 @@ import Home from "./components/Home";
 import CreatePost from "./components/CreatePost";
 import ViewSingePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
+import Profile from "./components/Profile";
 
 const Main = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("mini_sns_token")),
     flashMessages: [],
+    user: {
+      token: localStorage.getItem("mini_sns_token"),
+      username: localStorage.getItem("mini_sns_username"),
+      avatar: localStorage.getItem("mini_sns_avatar"),
+    },
   };
-  const reducerFn = (state, action) => {
+  const reducerFn = (draft, action) => {
     switch (action.type) {
       case "login":
-        return { loggedIn: true, flashMessages: state.flashMessages };
+        draft.loggedIn = true;
+        draft.user = action.data;
+        break;
       case "logout":
-        return { loggedIn: false, flashMessages: state.flashMessages };
+        draft.loggedIn = false;
+        break;
       case "flashMessage":
-        return {
-          loggedIn: state.loggedIn,
-          flashMessages: state.flashMessages.concat(action.value),
-        };
+        draft.flashMessages.push(action.value);
+        break;
     }
   };
 
-  const [state, dispatch] = useReducer(reducerFn, initialState);
+  const [state, dispatch] = useImmerReducer(reducerFn, initialState);
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("mini_sns_token", state.user.token);
+      localStorage.setItem("mini_sns_username", state.user.username);
+      localStorage.setItem("mini_sns_avatar", state.user.avatar);
+
+      return;
+    }
+
+    localStorage.removeItem("mini_sns_token");
+    localStorage.removeItem("mini_sns_username");
+    localStorage.removeItem("mini_sns_avatar");
+  }, [state.loggedIn]);
 
   return (
     <StateContext.Provider value={state}>
@@ -51,6 +73,7 @@ const Main = () => {
             <Route path="/terms" element={<Terms />} />
             <Route path="/posts/:id" element={<ViewSingePost />} />
             <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/profile/:username/*" element={<Profile />} />
           </Routes>
           <Footer />
         </BrowserRouter>

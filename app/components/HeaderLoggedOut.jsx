@@ -20,11 +20,7 @@ function HeaderLoggedOut() {
       const data = await response.json();
 
       if (data) {
-        localStorage.setItem("mini_sns_token", data.token);
-        localStorage.setItem("mini_sns_username", data.username);
-        localStorage.setItem("mini_sns_avatar", data.avatar);
-
-        appDispatch({ type: "login" });
+        appDispatch({ type: "login", data });
         return;
       }
 

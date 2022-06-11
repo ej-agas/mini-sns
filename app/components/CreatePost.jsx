@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 import { apiBaseUrl } from "../constants";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const navigate = useNavigate();
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ function CreatePost() {
         body: JSON.stringify({
           title,
           body,
-          token: localStorage.getItem("mini_sns_token"),
+          token: appState.user.token,
         }),
       });
 
