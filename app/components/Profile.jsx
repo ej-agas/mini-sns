@@ -16,6 +16,9 @@ function Profile() {
   });
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const getProfile = async () => {
       const api = `${apiBaseUrl}/profile/${username}`;
 
@@ -24,6 +27,7 @@ function Profile() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token: appState.user.token }),
+          signal,
         });
         const data = await response.json();
 
@@ -37,6 +41,9 @@ function Profile() {
     };
 
     getProfile();
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

@@ -9,6 +9,9 @@ function ProfilePosts() {
   const { username } = useParams();
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const getPosts = async () => {
       const api = `${apiBaseUrl}/profile/${username}/posts`;
 
@@ -16,6 +19,7 @@ function ProfilePosts() {
         const response = await fetch(api, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
+          signal,
         });
         const data = await response.json();
 
@@ -27,6 +31,10 @@ function ProfilePosts() {
     };
 
     getPosts();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   if (isLoading) return <LoadingDotsIcon />;

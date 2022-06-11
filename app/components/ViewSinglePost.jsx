@@ -10,6 +10,9 @@ function ViewSingePost() {
   const [post, setPost] = useState();
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const getPost = async () => {
       const api = `${apiBaseUrl}/post/${id}`;
 
@@ -17,6 +20,7 @@ function ViewSingePost() {
         const response = await fetch(api, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
+          signal,
         });
         const data = await response.json();
 
@@ -28,6 +32,9 @@ function ViewSingePost() {
     };
 
     getPost();
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   if (isLoading)
