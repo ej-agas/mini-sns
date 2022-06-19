@@ -16,6 +16,7 @@ import CreatePost from "./components/CreatePost";
 import ViewSingePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
 import Profile from "./components/Profile";
+import EditPost from "./components/EditPost";
 
 const Main = () => {
   const initialState = {
@@ -72,6 +73,7 @@ const Main = () => {
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/posts/:id" element={<ViewSingePost />} />
+            <Route path="/posts/:id/edit" element={<EditPost />} />
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/profile/:username/*" element={<Profile />} />
           </Routes>

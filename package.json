@@ -20,6 +20,7 @@
     "react-dom": "^18.1.0",
     "react-markdown": "^8.0.3",
     "react-router-dom": "^6.3.0",
+    "react-tooltip": "^4.2.21",
     "use-immer": "^0.7.0",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
