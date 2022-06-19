@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
 import LoadingDotsIcon from "./LoadingDotsIcon";
@@ -48,6 +49,21 @@ function ViewSingePost() {
   const formattedDate = `${date.toLocaleString("default", {
     month: "long",
   })} ${date.getDate()}, ${date.getFullYear()}`;
+  const allowedElements = [
+    "p",
+    "br",
+    "strong",
+    "em",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "ul",
+    "ol",
+    "li",
+  ];
 
   return (
     <Page title={post.title}>
@@ -74,7 +90,9 @@ function ViewSingePost() {
         on {formattedDate}
       </p>
 
-      <div className="body-content">{post.body}</div>
+      <div className="body-content">
+        <ReactMarkdown children={post.body} allowedElements={allowedElements} />
+      </div>
     </Page>
   );
 }
