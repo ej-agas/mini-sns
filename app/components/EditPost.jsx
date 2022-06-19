@@ -15,11 +15,11 @@ function EditPost() {
     id: useParams().id,
     title: {
       value: "",
-      errors: [],
+      errorMsg: "",
     },
     body: {
       value: "",
-      errors: [],
+      errorMsg: "",
     },
     isFetching: true,
     isUpdating: false,
@@ -33,14 +33,20 @@ function EditPost() {
         draft.isFetching = false;
         return;
       case "titleChange":
-        console.log(action);
+        draft.title.errorMsg = "";
         draft.title.value = action.value;
         return;
       case "bodyChange":
-        console.log(action);
+        draft.title.errorMsg = "";
         draft.body.value = action.value;
         return;
       case "submitRequest":
+        if (
+          draft.title.errorMsg.length !== 0 ||
+          draft.body.errorMsg.length !== 0
+        ) {
+          return;
+        }
         draft.requestCount++;
         return;
       case "updateRequestStarted":
@@ -49,12 +55,24 @@ function EditPost() {
       case "updateRequestFinished":
         draft.isUpdating = false;
         return;
+      case "validateTitle":
+        if (!action.value.trim()) {
+          draft.title.errorMsg = "Title should not be empty.";
+          return;
+        }
+      case "validateBody":
+        if (!action.value.trim()) {
+          draft.body.errorMsg = "Body should not be empty.";
+          return;
+        }
     }
   };
   const [state, dispatch] = useImmerReducer(reducerFn, initialState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch({ type: "validateTitle", value: state.title.value });
+    dispatch({ type: "validateBody", value: state.body.value });
     dispatch({ type: "submitRequest" });
     console.log(state);
   };
@@ -103,7 +121,7 @@ function EditPost() {
         token: appState.user.token,
       };
       try {
-        const response = await fetch(api, {
+        await fetch(api, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -137,6 +155,9 @@ function EditPost() {
             <small>Title</small>
           </label>
           <input
+            onBlur={(e) =>
+              dispatch({ type: "validateTitle", value: e.target.value })
+            }
             onChange={(e) =>
               dispatch({ type: "titleChange", value: e.target.value })
             }
@@ -149,6 +170,11 @@ function EditPost() {
             placeholder=""
             autoComplete="off"
           />
+          {state.title.errorMsg.length !== 0 && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.title.errorMsg}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -156,6 +182,9 @@ function EditPost() {
             <small>Body Content</small>
           </label>
           <textarea
+            onBlur={(e) =>
+              dispatch({ type: "validateBody", value: e.target.value })
+            }
             onChange={(e) =>
               dispatch({ type: "bodyChange", value: e.target.value })
             }
@@ -165,6 +194,11 @@ function EditPost() {
             className="body-content tall-textarea form-control"
             type="text"
           />
+          {state.body.errorMsg.length !== 0 && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.body.errorMsg}
+            </div>
+          )}
         </div>
 
         <button className="btn btn-primary" disabled={state.isUpdating}>
